@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123d52">
+  <title>SaludVital | Agenda de citas</title>
+  <style>
+    :root{--navy:#123d52;--teal:#087e83;--mint:#e9f7f4;--ink:#193443;--muted:#6d818b;--line:#dce8eb;--white:#fff;--bg:#f3f8f9;--gold:#e7b85c}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100vh}
+    .topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,24px)}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:-.4px;color:var(--navy)}
+    .brand-mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#0a8587,#13536b);display:grid;place-items:center;color:white;font-size:25px;font-weight:400;box-shadow:0 7px 16px #087e8333}
+    .brand small{display:block;font-size:10px;letter-spacing:2px;color:#78909a;font-weight:700;margin-top:2px}
+    .top-info{display:flex;align-items:center;gap:9px;color:#55717d;font-size:13px;font-weight:600}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:#35ad83;box-shadow:0 0 0 4px #35ad831a}
+    main{max-width:1160px;margin:42px auto 64px;padding:0 24px}
+    .welcome{display:flex;justify-content:space-between;align-items:end;margin-bottom:27px;gap:20px}
+    .eyebrow{color:var(--teal);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px}
+    h1{font-size:clamp(29px,4vw,42px);line-height:1.1;letter-spacing:-1.4px;color:var(--navy);margin:0}
+    .welcome p{color:var(--muted);margin:10px 0 0;font-size:15px;line-height:1.6}
+    .secure{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:30px;color:#54717c;font-size:12px;font-weight:700;white-space:nowrap}
+    .layout{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 14px 40px #173e5010}
+    .intro{background:linear-gradient(145deg,#123d52 0%,#145d6a 62%,#087e83 100%);color:white;padding:34px;position:relative;min-height:490px;display:flex;flex-direction:column;justify-content:space-between}
+    .intro:after{content:"";position:absolute;width:270px;height:270px;border:1px solid #ffffff1c;border-radius:50%;right:-95px;top:75px;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff06}
+    .intro-content{position:relative;z-index:1}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:#ffffff18;border:1px solid #ffffff30;border-radius:30px;padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:.5px}
+    .intro h2{font-size:31px;line-height:1.2;letter-spacing:-.8px;max-width:380px;margin:24px 0 13px}
+    .intro p{color:#d3e7e9;line-height:1.7;font-size:14px;max-width:390px;margin:0}
+    .benefits{display:grid;gap:14px;margin-top:32px;position:relative;z-index:1}
+    .benefit{display:flex;align-items:center;gap:12px;font-size:13px;color:#effafa}
+    .benefit-icon{width:34px;height:34px;border-radius:11px;background:#ffffff19;display:grid;place-items:center;font-size:16px}
+    .quote{position:relative;z-index:1;border-top:1px solid #ffffff2b;padding-top:22px;margin-top:28px;color:#d6e8e9;font-size:12px;line-height:1.6}
+    .quote strong{display:block;color:white;font-size:13px;margin-top:7px}
+    .form-panel{padding:32px 34px}
+    .form-head{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:25px}
+    .form-head h2{font-size:22px;color:var(--navy);margin:0;letter-spacing:-.5px}
+    .form-head p{font-size:13px;color:var(--muted);margin:7px 0 0}
+    .step{font-size:11px;font-weight:800;color:var(--teal);background:var(--mint);padding:8px 10px;border-radius:9px;white-space:nowrap}
+    .field{margin-bottom:19px}
+    label{display:block;font-size:12px;font-weight:750;color:#355461;margin-bottom:8px}
+    .input-wrap{position:relative}
+    .field-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:#7d969e;pointer-events:none}
+    input{width:100%;height:49px;border:1px solid #d9e5e8;border-radius:11px;padding:0 14px 0 42px;font:inherit;font-size:14px;color:var(--ink);background:#fbfdfd;outline:none;transition:.2s}
+    input::placeholder{color:#a0b0b6}
+    input:focus{border-color:#0c9290;box-shadow:0 0 0 4px #0c929018;background:white}
+    .hint{font-size:11px;color:#91a1a7;margin:7px 0 0}
+    .submit{width:100%;height:51px;border:0;border-radius:11px;background:linear-gradient(100deg,#087e83,#126278);color:#fff;font-size:14px;font-weight:800;letter-spacing:.2px;cursor:pointer;box-shadow:0 8px 18px #087e8330;transition:transform .2s,box-shadow .2s;margin-top:3px}
+    .submit:hover{transform:translateY(-2px);box-shadow:0 11px 22px #087e8340}
+    .submit:active{transform:translateY(0)}
+    #mensaje{display:none;margin:16px 0 0;padding:13px 14px;border-radius:10px;font-size:13px;font-weight:750;line-height:1.4}
+    #mensaje.visible{display:block}
+    #mensaje.success{background:#e9f8f0;color:#16764e;border:1px solid #c8ecd9}
+    #mensaje.error{background:#fff1ef;color:#b64b3d;border:1px solid #f4d5d0}
+    .privacy{display:flex;gap:9px;align-items:flex-start;color:#8a9ba1;font-size:11px;line-height:1.5;margin-top:17px}
+    .bottom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+    .mini-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px 19px;display:flex;align-items:center;gap:13px}
+    .mini-icon{width:39px;height:39px;flex:0 0 39px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:18px}
+    .mini-card strong{display:block;font-size:12px;color:var(--navy);margin-bottom:4px}
+    .mini-card span{font-size:11px;color:#84969d}
+    footer{text-align:center;color:#9aabb0;font-size:11px;padding:0 20px 28px}
+    @media(max-width:820px){main{margin-top:28px}.layout{grid-template-columns:1fr}.intro{min-height:390px}.bottom-grid{grid-template-columns:1fr}.welcome{align-items:start;flex-direction:column}.secure{align-self:flex-start}}
+    @media(max-width:480px){.topbar{height:66px;padding:0 18px}.top-info{font-size:0}.top-info .live-dot{font-size:initial}main{padding:0 15px}.form-panel,.intro{padding:25px 22px}.intro h2{font-size:27px}.form-head{flex-direction:column}.step{align-self:flex-start}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">+</div><div>SaludVital<small>AGENDA MÉDICA</small></div></div>
+    <div class="top-info"><span class="live-dot"></span> Plataforma de atención en línea</div>
+  </header>
+  <main>
+    <section class="welcome">
+      <div><p class="eyebrow">Tu bienestar, nuestra prioridad</p><h1>Agenda tu cita médica</h1><p>Reserva tu espacio de atención de forma rápida, sencilla y segura.</p></div>
+      <div class="secure">✦ &nbsp; Atención organizada y segura</div>
+    </section>
+    <section class="layout">
+      <article class="panel intro">
+        <div class="intro-content">
+          <span class="pill"><span class="live-dot"></span> SERVICIO DE CITAS</span>
+          <h2>La atención que necesitas, cuando la necesitas.</h2>
+          <p>Estamos aquí para acompañarte. Completa tus datos y agenda tu consulta con el profesional de tu preferencia.</p>
+          <div class="benefits">
+            <div class="benefit"><span class="benefit-icon">✓</span> Reserva en pocos pasos</div>
+            <div class="benefit"><span class="benefit-icon">◷</span> Consulta fecha y hora disponibles</div>
+            <div class="benefit"><span class="benefit-icon">♡</span> Atención centrada en el paciente</div>
+          </div>
+        </div>
+        <div class="quote">Cuidar de tu salud comienza con una buena decisión.<strong>Estamos para ayudarte.</strong></div>
+      </article>
+      <section class="panel form-panel">
+        <div class="form-head"><div><h2>Solicitar una cita</h2><p>Ingresa la información para reservar tu atención.</p></div><span class="step">PASO 1 DE 1</span></div>
+        <div class="field">
+          <label for="profesional">Profesional de salud</label>
+          <div class="input-wrap"><span class="field-icon">⚕</span><input id="profesional" type="text" placeholder="Ej. Dra. María Gómez" autocomplete="off" required></div>
+        </div>
+        <div class="field">
+          <label for="fechaHora">Fecha y hora de la cita</label>
+          <div class="input-wrap"><span class="field-icon">▦</span><input id="fechaHora" type="datetime-local" required></div>
+          <p class="hint">Selecciona una fecha y hora futura.</p>
+        </div>
+        <div class="field">
+          <label for="pacienteId">Documento o identificación del paciente</label>
+          <div class="input-wrap"><span class="field-icon">▤</span><input id="pacienteId" type="text" placeholder="Ingresa tu número de documento" autocomplete="off" required></div>
+        </div>
+        <button class="submit" id="btnReservar" type="button">Confirmar reserva &nbsp; →</button>
+        <p id="mensaje" role="status" aria-live="polite"></p>
+        <div class="privacy"><span>🔒</span><span>Tu información se utiliza únicamente para gestionar la solicitud de tu cita médica.</span></div>
+      </section>
+    </section>
+    <section class="bottom-grid" aria-label="Información del servicio">
+      <div class="mini-card"><div class="mini-icon">◷</div><div><strong>Agenda organizada</strong><span>Elige el momento de tu consulta</span></div></div>
+      <div class="mini-card"><div class="mini-icon">✓</div><div><strong>Confirmación inmediata</strong><span>Conoce el resultado de tu solicitud</span></div></div>
+      <div class="mini-card"><div class="mini-icon">♡</div><div><strong>Atención al paciente</strong><span>Tu salud es lo más importante</span></div></div>
+    </section>
+  </main>
+  <footer>SaludVital · Sistema de gestión de citas médicas</footer>
+  <script>
+    const boton = document.getElementById('btnReservar');
+    const mensaje = document.getElementById('mensaje');
+    boton.addEventListener('click', async () => {
+      const fechaHora = document.getElementById('fechaHora').value;
+      const profesional = document.getElementById('profesional').value.trim();
+      const pacienteId = document.getElementById('pacienteId').value.trim();
+      mensaje.className = '';
+      if (!profesional || !fechaHora || !pacienteId) {
+        mensaje.textContent = 'Completa todos los campos para continuar.';
+        mensaje.className = 'visible error';
+        return;
+      }
+      const body = { profesional, fechaHora: fechaHora ? fechaHora + ':00' : null, pacienteId };
+      boton.disabled = true;
+      boton.textContent = 'Procesando solicitud...';
+      try {
+        const r = await fetch('/api/citas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (r.status === 201) {
+          mensaje.textContent = 'Cita reservada';
+          mensaje.className = 'visible success';
+        } else if (r.status === 409) {
+          mensaje.textContent = 'Horario no disponible';
+          mensaje.className = 'visible error';
+        } else {
+          mensaje.textContent = 'Datos inválidos. Verifica la información ingresada.';
+          mensaje.className = 'visible error';
+        }
+      } catch (e) {
+        mensaje.textContent = 'Error de conexión. Intenta nuevamente.';
+        mensaje.className = 'visible error';
+      } finally {
+        boton.disabled = false;
+        boton.textContent = 'Confirmar reserva  →';
+      }
+    });
+  </script>
+</body>
+</html>
