@@ -14,3 +14,14 @@ mvn spring-boot:run
 Abrir `http://localhost:8080/citas.html`.
 
 Las pruebas Selenium se etiquetan `ui` y se ejecutan individualmente desde VS Code o con una configuración específica de Maven.
+
+## Automatización y pruebas
+
+El proyecto cuenta con integración continua mediante GitHub Actions.
+
+En cada actualización de la rama principal o solicitud de integración se ejecuta:
+
+- Compilación del proyecto con Maven.
+- Ejecución de pruebas automatizadas.
+- Verificación de cobertura con JaCoCo.
+- Generación y publicación del informe de cobertura como artefacto.
